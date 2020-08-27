@@ -1,0 +1,55 @@
+from classes.connection import Connection
+
+from tkinter import messagebox
+
+
+class Login:
+	def __init__(self):
+		self.db = Connection()
+		self.username = ''
+		self.password = ''
+
+	def login_user(self, username, password):
+		self.username = username
+		qry = 'SELECT password FROM normal_user WHERE username = %s;'
+		values = (self.username,)
+		passwd = self.db.show_with_args(qry, values)
+		if not passwd:
+			messagebox.showerror('Login', 'Username does not exist.')
+		else:
+			if password == passwd[0][0]:
+				self.password = password
+				return True
+			else:
+				messagebox.showerror('Login', 'Please enter correct password')
+				return False
+
+	def delete_user(self, username, password):
+		self.username = username
+		qry = 'SELECT password FROM normal_user WHERE username = %s;'
+		values = (self.username,)
+		passwd = self.db.show_with_args(qry, values)
+		if not passwd:
+			messagebox.showerror('Delete User', 'Username does not exist.')
+		else:
+			if password == passwd[0][0]:
+				qry1 = 'SELECT account_id FROM normal_account WHERE username = %s;'
+				values1 = (self.username,)
+				account_id = self.db.show_with_args(qry1, values1)
+				qry_optional = 'SELECT account_id FROM transaction WHERE account_id = %s;'
+				values_optional = (account_id[0][0],)
+				optional_out = self.db.show_with_args(qry_optional, values_optional)
+				if optional_out:
+					qry2 = 'DELETE FROM transaction WHERE account_id = %s;'
+					values2 = (account_id[0][0],)
+					self.db.iud(qry2, values2)
+				qry3 = 'DELETE FROM normal_account WHERE username = %s;'
+				values3 = (self.username,)
+				self.db.iud(qry3, values3)
+				qry4 = 'DELETE FROM normal_user WHERE username = %s;'
+				values4 = (self.username,)
+				if self.db.iud(qry4, values4):
+					return True
+			else:
+				messagebox.showerror('Delete User', 'Please enter correct password')
+				return False
