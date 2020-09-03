@@ -3,6 +3,7 @@ from tkinter import messagebox
 
 
 class Connection:
+	"""Class for database connection."""
 	def __init__(self):
 		self.connection = mysql.connector.connect(
 			host="localhost",
@@ -13,7 +14,7 @@ class Connection:
 		)
 		self.cursor = self.connection.cursor()
 
-	def iud(self, qry, values):
+	def iud(self, qry, values):  # Runs the insert/update/delete queries
 		try:
 			self.cursor.execute(qry, values)
 			self.connection.commit()
@@ -21,7 +22,7 @@ class Connection:
 		except Exception as e:
 			messagebox.showerror('Error', e)
 
-	def insert_with_id_return(self, qry, values):
+	def insert_with_id_return(self, qry, values):  # Runs the insert query and returns the id.
 		try:
 			self.cursor.execute(qry, values)
 			self.cursor.commit(qry, values)
@@ -29,7 +30,7 @@ class Connection:
 		except Exception as e:
 			messagebox.showerror('Error', e)
 
-	def show(self, qry):
+	def show(self, qry):  # Runs the select queries.
 		try:
 			self.cursor.execute(qry)
 			data = self.cursor.fetchall()
@@ -39,7 +40,7 @@ class Connection:
 			messagebox.showerror('Error', e)
 			return data
 
-	def show_with_args(self, qry, values):
+	def show_with_args(self, qry, values):  # Runs the select queries with specific fields.
 		try:
 			self.cursor.execute(qry, values)
 			data = self.cursor.fetchall()
