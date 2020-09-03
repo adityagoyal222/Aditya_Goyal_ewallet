@@ -8,11 +8,6 @@ import unittest
 
 class UnitTesting(unittest.TestCase):
 	"""Unit Testing class"""
-	def test_signup(self):  # First run this test
-		signup = Signup()
-		actual_result = signup.signup_user('tester', 'tester John', 'tester', '712648918', 'tester@test.com')
-		self.assertTrue(actual_result)
-
 	def test_login(self):  # run this test after test_signup.
 		login = Login()
 		actual_result = login.login_user('tester', 'tester')
@@ -39,8 +34,3 @@ class UnitTesting(unittest.TestCase):
 		actual_result = type(account.show_transaction('tester'))
 		expected_result = type([])
 		self.assertEqual(actual_result, expected_result)
-
-	def test_delete_user(self):  # run this test at the last.
-		login = Login()
-		actual_result = login.delete_user('tester', 'tester')
-		self.assertTrue(actual_result)

@@ -21,6 +21,7 @@ class Connection:
 			return True
 		except Exception as e:
 			messagebox.showerror('Error', e)
+			return False
 
 	def insert_with_id_return(self, qry, values):  # Runs the insert query and returns the id.
 		try:
@@ -29,6 +30,7 @@ class Connection:
 			return self.cursor.lastrowid
 		except Exception as e:
 			messagebox.showerror('Error', e)
+			return False
 
 	def show(self, qry):  # Runs the select queries.
 		try:
